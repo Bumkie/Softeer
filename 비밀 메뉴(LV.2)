@@ -1,0 +1,30 @@
+import java.io.*;
+import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) {
+        String answer = "";
+        
+        Scanner input = new Scanner(System.in);
+        int m = input.nextInt();
+        int n = input.nextInt();
+        int k = input.nextInt();
+
+        String find = "";
+        String s = "";
+        for(int i = 0; i < m; i++){
+            find += input.next();
+        }
+        for(int i = 0; i < n; i++){
+            s += input.next();
+        }
+        if(s.contains(find)){
+            answer = "secret";
+        }
+        else{
+            answer = "normal";
+        }
+        System.out.println(answer);
+    }
+}
