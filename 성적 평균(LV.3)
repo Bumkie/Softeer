@@ -1,0 +1,30 @@
+import java.io.*;
+import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+
+        int N = input.nextInt();
+        int K = input.nextInt();
+
+        int[] score = new int[N];
+
+        for(int i = 0; i < N; i++){
+            score[i] = input.nextInt();
+        }
+
+        double avr = 0;
+        for(int i = 0; i < K; i++){
+            double total = 0;
+            int start = input.nextInt();
+            int end = input.nextInt();
+            for(int j = start - 1; j < end; j++){
+                total += score[j];
+            }
+            avr = total / (end - start + 1);
+            System.out.println(String.format("%.2f", avr));
+        }
+    }
+}
