@@ -1,0 +1,82 @@
+import java.io.*;
+import java.util.*;
+
+public class Main {
+    static int[][] arr;
+    static int answer;
+    static boolean[][] visited;
+    static int[][] road;
+    
+    public static void main(String[] args) {
+
+        Scanner input = new Scanner(System.in);
+        int n = input.nextInt();
+        int m = input.nextInt();
+        int total = 0;
+        
+        arr = new int[n][n];
+        visited = new boolean[n][n];
+        int[][] place = new int[m][2]; 
+        
+        int[][] zero;
+        road = new int[4][2];
+
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < n; j++){
+                arr[i][j] = input.nextInt();
+            }
+        }
+        //친구의 시작 위치는 지켜줘야할듯?
+        for(int i = 0; i < m; i++){
+            int x = input.nextInt() - 1;
+            int y = input.nextInt() - 1;
+            place[i][0] = x;
+            place[i][1] = y;
+
+            total += arr[x][y];
+            arr[x][y] = 0;
+        }
+        
+        for(int i = 0; i < m; i++){
+            answer = 0;
+            int sec = 0;
+            zero = new int[4][2];
+            dfs(place[i][0], place[i][1], 0, 0, zero);
+            total += answer;
+            for(int j = 0; j < 4; j++)
+                arr[road[j][0]][road[j][1]] = 0;
+        }
+        System.out.println("A" + total);
+    }
+    public static void dfs(int x, int y, int sum, int sec, int[][] zero){
+        if(x < 0 || x > arr.length -1 || y < 0 || y > arr.length - 1)
+            return;
+        if(sec == 4){
+            if(sum > answer){
+                answer = sum;
+                //road = zero 이렇게 하면 road 가 zero의 메모리를 가르키므로 zero 값이 바뀔때마다 road도 바뀜
+                for (int i = 0; i < 4; i++) {
+                    road[i][0] = zero[i][0];
+                    road[i][1] = zero[i][1];
+                }
+                System.out.println(answer);
+            }
+            return;
+        }
+        if(visited[x][y]){
+            return;
+        }
+        else{
+            visited[x][y] = true;
+            zero[sec][0] = x;
+            zero[sec][1] = y;
+            sum += arr[x][y];
+        }
+        dfs(x+1, y, sum, sec+1, zero);
+        dfs(x-1, y, sum, sec+1, zero);
+        dfs(x, y+1, sum, sec+1, zero);
+        dfs(x, y-1, sum, sec+1, zero);
+        
+        visited[x][y] = false; //DFS가 끝나면 다시 비워줘~
+    }
+}
