@@ -1,0 +1,79 @@
+import java.io.*;
+import java.util.*;
+
+public class Main {
+    static ArrayList<Integer>[] Graph;
+    static boolean[] visited;
+    static int[] arr;
+    public static void main(String[] args) {
+        
+        Scanner input = new Scanner(System.in);
+        int answer = 0;
+        int n = input.nextInt();
+        int m = input.nextInt();
+
+        Graph = new ArrayList[n+1];
+        for(int i = 0; i < n+1; i++){
+            Graph[i] = new ArrayList<Integer>();
+        }
+        visited = new boolean[n+1];
+        arr = new int[n+1];
+        int[] tmp = new int[n+1];
+        ArrayList<Integer> road = new ArrayList<>();
+        
+        for(int i = 0; i < m; i++){
+            int x = input.nextInt();
+            int y = input.nextInt();
+            Graph[x].add(y);
+        }
+        int start = input.nextInt();
+        int end = input.nextInt();
+        
+        DFS(start, end, tmp);
+        for(int i = 1; i < arr.length; i++){
+            if(arr[i] > 0 && i != start && i != end)
+                road.add(i);
+        }
+        tmp = new int[n+1];
+        arr = new int[n+1];
+        visited = new boolean[n+1];
+        DFS(end, start, tmp);
+        for(int i = 1; i < arr.length; i++){
+            if(arr[i] > 0 && i != start && i != end){
+                if(road.contains(i))
+                    answer++;
+            }
+        }
+        
+        System.out.println(answer);
+        
+    }
+    public static void DFS(int start, int end, int[] tmp){
+        boolean flag = false;
+        if(start == end){
+            for(int i = 1; i < tmp.length; i++){
+                if(tmp[i] > 0){
+                    arr[i] +=1;
+                    
+                }
+            }
+            return;
+        }
+        if(visited[start])
+            return;
+        for(int i = 0; i < Graph[start].size(); i++){
+            if(tmp[Graph[start].get(i)] == 1)
+                flag = true;
+            tmp[Graph[start].get(i)] = 1;
+            //배열을 만들어서 지나간 숫자르 기억
+            visited[start] = true;
+            DFS(Graph[start].get(i), end, tmp);
+            
+        }
+        if(!flag)
+            tmp[start] = 0; //단방향
+        
+        flag = false;
+        visited[start] = false;
+    }
+}
