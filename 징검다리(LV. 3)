@@ -1,0 +1,43 @@
+import java.util.Scanner;
+
+public class Main {
+    static int[] dp;
+    static int[] A;
+    static int n;
+
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+
+        n = input.nextInt();
+        A = new int[n];
+        dp = new int[n];
+
+        for (int i = 0; i < n; i++) {
+            A[i] = input.nextInt();
+            dp[i] = -1;
+        }
+
+        int answer = 0;
+        for (int i = 0; i < n; i++) {
+            answer = Math.max(answer, findMaxLength(i));
+        }
+
+        System.out.println(answer);
+    }
+
+    static int findMaxLength(int idx) {
+        if (dp[idx] != -1) { //저장된 값 반환
+            return dp[idx];
+        }
+
+        int maxLen = 1; // 최소 길이는 1
+        for (int i = idx + 1; i < n; i++) {
+            if (A[idx] < A[i]) { //현재(idx)값이 다음(i)값 보다 작은지 판별
+                maxLen = Math.max(maxLen, 1 + findMaxLength(i));
+            }
+        }
+
+        dp[idx] = maxLen;
+        return maxLen;
+    }
+}
